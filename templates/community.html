@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community - Fake News Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='assets/square-favicon.png') }}" type="image/x-icon">
+</head>
+<body>
+  {% include 'includes/_navbar.html' %}
+  <div class="container">
+    <div class="community-header">
+      <h1>Community</h1>
+      <p>Engage with others by sharing your thoughts, liking posts, and replying to discussions.</p>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'danger' if category == 'community_error' else 'success' }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <form method="POST" action="{{ url_for('community') }}" class="community-form">
+      <textarea name="post" class="form-control" placeholder="Share something with the community..." required></textarea>
+      <button type="submit" class="btn btn-primary btn-lg">Post</button>
+    </form>
+    <div class="posts-section">
+      {% for post in posts %}
+        <div class="post-card">
+          <div class="post-header">
+            <span class="post-author">{{ post.username }}</span>
+            <span class="post-date">{{ post.createdAt }}</span>
+          </div>
+          <p class="post-text">{{ post.postText }}</p>
+          <div class="post-actions">
+            <form method="POST" action="{{ url_for('like_post', post_id=post.postID) }}" style="display:inline;">
+              <button type="submit" class="btn btn-outline-success btn-sm like-btn">Like ({{ post.likeCount }})</button>
+            </form>
+            <button class="btn btn-outline-info btn-sm reply-btn" data-post-id="{{ post.postID }}">Reply</button>
+          </div>
+          <div class="replies">
+            {% for reply in replies %}
+              {% if reply.postID == post.postID %}
+                <div class="reply">
+                  <span class="reply-author">{{ reply.username }}</span>
+                  <p class="reply-text">{{ reply.replyText }}</p>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <form method="POST" action="{{ url_for('community') }}" class="reply-form" style="display:none;">
+            <input type="hidden" name="reply_to" value="{{ post.postID }}">
+            <textarea name="post" class="form-control" placeholder="Write a reply..." required></textarea>
+            <button type="submit" class="btn btn-primary btn-sm">Reply</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% include 'includes/_footer.html' %}
+  <script>
+    document.querySelectorAll('.reply-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const postId = button.getAttribute('data-post-id');
+        const replyForm = button.closest('.post-card').querySelector('.reply-form');
+        replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
