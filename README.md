@@ -95,8 +95,3 @@ News-Verifier/
 
 This project is licensed under the [MIT License](LICNSE).
 
---
-
-*For any questions or feedback, feel free to reach out to [rohansingh.rs608@gmail.com](mailto:rohansingh.rs608@gmailcom).*
-
---- 
