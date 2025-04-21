@@ -33,7 +33,7 @@ News-Verifier/
 ├── True.zip                   # Dataset containing true news articles
 ├── scraped.zip                # Additional scraped data
 └── README.md                  # Project documentation
-``
+```
 
 
 
