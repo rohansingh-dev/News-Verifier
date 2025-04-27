@@ -93,5 +93,5 @@ News-Verifier/
 
 ## 📄 Licnse
 
-This project is licensed under the [MIT License](LICNSE).
+This project is licensed under the [MIT License](LICNSE).
 
