@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify - News Verifier App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='assets/square-favicon.png') }}" type="image/x-icon">
+</head>
+<body>
+  {% include 'includes/_navbar.html' %}
+  <section>
+    <div class="container">
+      <div class="jumbotron">
+        <h1 class="home-title">Verification Result</h1>
+        <div class="line-break"></div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              {% if category == 'predict_error' %}
+                <div class="alert alert-danger">{{ message }}</div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <form action="{{ url_for('predict')}}" method="POST" class="mt-4">
+          <div class="input-group input-group-lg">
+            <input class="form-control" type="text" name="news" placeholder="Enter the news URL to verify" value="{{ url_input }}" required>
+            <div class="input-group-append">
+              <button type="submit" class="btn">Verify</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="predict-card">
+        <h4>Based on our classifier result</h4>
+        <div class="card-body">
+          {% if prediction_text == 'Real' %}
+            <h1 class="true">This news is <strong>{{ prediction_text }} ✅</strong></h1>
+          {% elif prediction_text == 'Fake' %}
+            <h1 class="false">This news is <strong>{{ prediction_text }} ❌</strong></h1>
+          {% else %}
+            <h1 class="error">Error in prediction ❌</h1>
+          {% endif %}
+          <p class="percentage">Real: {{ true_percentage }}% | Fake: {{ false_percentage }}%</p>
+          <p class="date">Verification Date: {{ prediction_date }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% include 'includes/_footer.html' %}
+</body>
+</html>

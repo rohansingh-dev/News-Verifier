@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History - Fake News Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='assets/square-favicon.png') }}" type="image/x-icon">
+</head>
+<body>
+  {% include 'includes/_navbar.html' %}
+  <div class="container">
+    <div class="history-card">
+      <h1>Verification History</h1>
+      {% if record %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>URL</th>
+              <th>Verification</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in history %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ entry.historyURL }}" target="_blank">{{ entry.historyURL }}</a></td>
+                <td>{{ entry.historyLabel }}</td>
+                <td>{{ entry.historyDate }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No history found.</p>
+      {% endif %}
+    </div>
+  </div>
+  {% include 'includes/_footer.html' %}
+</body>
+</html>

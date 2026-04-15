@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comments - Fake News Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='assets/square-favicon.png') }}" type="image/x-icon">
+</head>
+<body>
+  {% include 'includes/_navbar.html' %}
+  <div class="comments-container">
+    <h1>Comments</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          {% if category == 'comment_success' %}
+            <div class="alert alert-success">{{ message }}</div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <form method="POST" action="{{ url_for('comments') }}">
+      <div class="input-group mb-3">
+        <input type="text" name="comment" class="form-control" placeholder="Write a comment..." required>
+        <button type="submit" class="btn">Post</button>
+      </div>
+    </form>
+    <div class="comments-section">
+      {% for comment in comments %}
+        <div class="comment">
+          <span class="comment-author">{{ comment.username }}</span>
+          <p class="comment-text">{{ comment.commentText }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% include 'includes/_footer.html' %}
+</body>
+</html>
